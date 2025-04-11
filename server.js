@@ -7,7 +7,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Use your Stripe SECRET key here (starts with "sk_")
-const stripe = Stripe("sk_live_...gRvN"); // Replace this!
+const stripe = Stripe("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");
+
 
 app.use(cors());
 app.use(express.json());
