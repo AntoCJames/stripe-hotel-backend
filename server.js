@@ -3,16 +3,16 @@ const Stripe = require("stripe");
 const cors = require("cors");
 const path = require("path");
 
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-
 const app = express();
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY); // secure secret key from Render env
+
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the 'public' folder
+// ✅ Serve static files from 'public' directory
 app.use(express.static(path.join(__dirname, "public")));
 
-// Stripe setup intent endpoint
+// ✅ API endpoint to create a SetupIntent and Customer
 app.post("/create-setup-intent", async (req, res) => {
   const { email, name } = req.body;
 
@@ -29,14 +29,17 @@ app.post("/create-setup-intent", async (req, res) => {
       customerId: customer.id,
     });
   } catch (err) {
+    console.error(err);
     res.status(500).send({ error: err.message });
   }
 });
 
-// Catch-all route to serve frontend (index.html)
+// ✅ Catch-all route to serve index.html (for SPA support)
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`✅ Server running on http://localhost:${PORT}`);
+});
