@@ -7,7 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Use your actual Stripe **secret key** here (not the public one!)
-const stripe = Stripe("sk_test_your_secret_key_here"); // REPLACE THIS!
+const stripe = Stripe("sk_live_...gRvN"); // REPLACE THIS!
 
 // Middleware
 app.use(cors());
