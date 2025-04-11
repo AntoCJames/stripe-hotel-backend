@@ -2,21 +2,22 @@ const express = require("express");
 const Stripe = require("stripe");
 const cors = require("cors");
 const path = require("path");
+require("dotenv").config(); // Load .env locally, safe for Render too
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Use your Stripe SECRET key here (starts with "sk_")
-const stripe = Stripe("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");
+// Use your Stripe Secret Key from env variables
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
-
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Serve static files (e.g. index.html) from /public
+// Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, "public")));
 
-// Stripe Setup Intent route
+// Route: Create Setup Intent
 app.post("/create-setup-intent", async (req, res) => {
   try {
     const { email, name } = req.body;
@@ -38,11 +39,12 @@ app.post("/create-setup-intent", async (req, res) => {
   }
 });
 
-// Fallback for all other GET routes (serves index.html)
+// Fallback: Serve index.html for any unknown GET requests (SPA support)
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+// Start the server
 app.listen(PORT, () => {
-  console.log(`✅ Server is running on http://localhost:${PORT}`);
+  console.log(`✅ Server running on http://localhost:${PORT}`);
 });
