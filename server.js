@@ -4,15 +4,12 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY); // secure secret key from Render env
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 app.use(cors());
 app.use(express.json());
-
-// ✅ Serve static files from 'public' directory
 app.use(express.static(path.join(__dirname, "public")));
 
-// ✅ API endpoint to create a SetupIntent and Customer
 app.post("/create-setup-intent", async (req, res) => {
   const { email, name } = req.body;
 
@@ -34,12 +31,12 @@ app.post("/create-setup-intent", async (req, res) => {
   }
 });
 
-// ✅ Catch-all route to serve index.html (for SPA support)
+// ✅ This fixes your crash:
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
