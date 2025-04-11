@@ -3,7 +3,7 @@ const Stripe = require("stripe");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
-const stripe = Stripe("pk_live_51OALAoFeGX7ddHOvn4gIPoILyWZ146SxJSHyx4feI0ILHxbYh9AsrNdiSELW7JVLP2QKPIDUDOt2Vta4wzOS9dh200c7B9hbAW"); // Replace with your real Stripe secret key
+const stripe = Stripe("sk_live_...gRvN"); // Replace with your real Stripe secret key
 const app = express();
 
 app.use(cors());
