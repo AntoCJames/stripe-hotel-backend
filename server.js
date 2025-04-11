@@ -3,16 +3,16 @@ const Stripe = require("stripe");
 const cors = require("cors");
 const path = require("path");
 
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY); // 🔐 secure key
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Serve the frontend
+// Serve static files from the 'public' folder
 app.use(express.static(path.join(__dirname, "public")));
 
-// ✅ Stripe SetupIntent route
+// Stripe setup intent endpoint
 app.post("/create-setup-intent", async (req, res) => {
   const { email, name } = req.body;
 
@@ -33,7 +33,7 @@ app.post("/create-setup-intent", async (req, res) => {
   }
 });
 
-// ✅ Catch-all route for frontend
+// Catch-all route to serve frontend (index.html)
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
