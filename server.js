@@ -6,17 +6,16 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Use your actual Stripe **secret key** here (not the public one!)
-const stripe = Stripe("sk_live_...gRvN"); // REPLACE THIS!
+// Use your Stripe SECRET key here (starts with "sk_")
+const stripe = Stripe("sk_live_...gRvN"); // Replace this!
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from "public" directory
+// Serve static files (e.g. index.html) from /public
 app.use(express.static(path.join(__dirname, "public")));
 
-// Stripe route
+// Stripe Setup Intent route
 app.post("/create-setup-intent", async (req, res) => {
   try {
     const { email, name } = req.body;
@@ -30,4 +29,19 @@ app.post("/create-setup-intent", async (req, res) => {
 
     res.json({
       clientSecret: setupIntent.client_secret,
-      customerId:
+      customerId: customer.id,
+    });
+  } catch (error) {
+    console.error("Stripe error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Fallback for all other GET routes (serves index.html)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+app.listen(PORT, () => {
+  console.log(`✅ Server is running on http://localhost:${PORT}`);
+});
